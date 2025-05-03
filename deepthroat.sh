@@ -64,4 +64,4 @@ aws_snatch
 gcp_snatch
 azure_snatch
 
-echo "[*] deepthroat.sh finished. Check $OUT_DIR for stolen soul fragments."
+echo "[*] deepthroat.sh finished. Check $OUT_DIR for messy cleanup."
